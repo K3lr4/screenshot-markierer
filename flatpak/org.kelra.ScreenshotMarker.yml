@@ -1,0 +1,78 @@
+app-id: org.kelra.ScreenshotMarker
+runtime: org.gnome.Platform
+runtime-version: '50'
+sdk: org.gnome.Sdk
+command: screenshot-marker
+finish-args:
+  - --share=ipc
+  - --socket=fallback-x11
+  - --socket=wayland
+  - --env=PYTHONPATH=/app/lib/python3.13/site-packages
+  - --env=TCL_LIBRARY=/app/lib/tcl9.0
+  - --env=TK_LIBRARY=/app/lib/tk9.0
+modules:
+  - name: tcl
+    buildsystem: simple
+    build-commands:
+      - cd unix && ./configure --prefix=/app --disable-symbols
+      - cd unix && make -j1 binaries
+      - cd unix && make -j1 install-binaries install-libraries install-headers
+      - install -Dm644 libtommath/tommath.h /app/include/tommath.h
+    post-install:
+      - chmod u+w /app/lib/libtcl9.0.so
+    sources:
+      - type: archive
+        url: https://netix.dl.sourceforge.net/project/tcl/Tcl/9.0.2/tcl9.0.2-src.tar.gz
+        sha256: e074c6a8d9ba2cddf914ba97b6677a552d7a52a3ca102924389a05ccb249b520
+  - name: tk
+    buildsystem: simple
+    build-commands:
+      - cd unix && ./configure --prefix=/app --with-tcl=/app/lib --with-tclinclude=/app/include --disable-symbols
+      - cd unix && make -j1 binaries
+      - cd unix && make -j1 install-binaries install-libraries install-headers
+    post-install:
+      - chmod u+w /app/lib/libtcl9tk9.0.so
+    sources:
+      - type: archive
+        url: https://netix.dl.sourceforge.net/project/tcl/Tcl/9.0.2/tk9.0.2-src.tar.gz
+        sha256: 76fb852b2f167592fe8b41aa6549ce4e486dbf3b259a269646600e3894517c76
+  - name: tkinter
+    buildsystem: simple
+    build-commands:
+      - install -d /app/lib/python3.13/site-packages/tkinter
+      - cp -a Lib/tkinter/. /app/lib/python3.13/site-packages/tkinter/
+      - cc -shared -fPIC $(python3-config --includes) -I/usr/include/python3.13/internal -I/app/include -Wl,-rpath,/app/lib -L/app/lib -o /app/lib/python3.13/site-packages/_tkinter$(python3-config --extension-suffix) Modules/_tkinter.c -ltcl9.0 -ltcl9tk9.0
+    sources:
+      - type: archive
+        url: https://www.python.org/ftp/python/3.13.15/Python-3.13.15.tar.xz
+        sha256: 1e66a7945a48390ee4c2a4268a0e4185884059a13c4aab6d148aa208deea4a76
+  - name: pillow
+    buildsystem: simple
+    build-commands:
+      - pip3 install --prefix=/app --no-deps --no-index Pillow-*.whl
+    sources:
+      - type: file
+        url: https://files.pythonhosted.org/packages/f7/62/de5bdd77d935331f4f802edc11e4d82950f642caad6cb2f949837b8560e2/pillow-12.3.0-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
+        sha256: 0847a763afefb695bc912d7c131e7e0632d4edc1d8698f58ddabec8e46b8b6d3
+        dest-filename: Pillow-12.3.0-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
+  - name: screenshot-marker
+    buildsystem: simple
+    build-commands:
+      - install -Dm755 screenshot_marker.py /app/share/screenshot-marker/screenshot_marker.py
+      - install -Dm755 screenshot-marker-launcher /app/bin/screenshot-marker
+      - install -Dm644 org.kelra.ScreenshotMarker.desktop /app/share/applications/org.kelra.ScreenshotMarker.desktop
+      - install -Dm644 org.kelra.ScreenshotMarker.metainfo.xml /app/share/metainfo/org.kelra.ScreenshotMarker.metainfo.xml
+      - install -Dm644 org.kelra.ScreenshotMarker.svg /app/share/icons/hicolor/64x64/apps/org.kelra.ScreenshotMarker.svg
+    sources:
+      - type: file
+        path: ../screenshot_marker.py
+      - type: file
+        path: org.kelra.ScreenshotMarker.desktop
+      - type: file
+        path: org.kelra.ScreenshotMarker.metainfo.xml
+      - type: file
+        path: org.kelra.ScreenshotMarker.svg
+      - type: script
+        dest-filename: screenshot-marker-launcher
+        commands:
+          - exec python3 /app/share/screenshot-marker/screenshot_marker.py "$@"

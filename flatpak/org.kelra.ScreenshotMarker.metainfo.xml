@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.kelra.ScreenshotMarker</id>
+  <name>Screenshot-Markierer</name>
+  <summary>Annotate and crop screenshots and images</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>0BSD AND GPL-3.0-only</project_license>
+  <developer id="org.kelra">
+    <name>Kelra</name>
+  </developer>
+  <description>
+    <p>Open images or paste them from the clipboard, add circles, arrows, and numbered markers, move or rotate annotations, crop an area, then copy or save the result.</p>
+  </description>
+  <launchable type="desktop-id">org.kelra.ScreenshotMarker.desktop</launchable>
+  <provides>
+    <id>org.kelra.ScreenshotMarker.desktop</id>
+  </provides>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="1.0" date="2026-10-03"/>
+  </releases>
+</component>

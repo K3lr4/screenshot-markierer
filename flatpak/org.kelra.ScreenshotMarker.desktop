@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Screenshot-Markierer
+GenericName=Screenshot Annotation Tool
+Comment=Screenshots mit Kreisen, Pfeilen und Markern versehen
+Exec=screenshot-marker %f
+Icon=org.kelra.ScreenshotMarker
+Terminal=false
+Categories=Graphics;
+MimeType=image/png;image/jpeg;image/webp;image/bmp;image/tiff;
+StartupNotify=true
+StartupWMClass=ScreenshotMarker
