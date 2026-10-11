@@ -4,6 +4,10 @@ Screenshot Marker is a small Linux desktop editor for annotating screenshots and
 
 It is an image annotation tool; it does not capture the screen itself.
 
+## Useful for AI-assisted workflows
+
+Prepare visual context for ChatGPT, Codex, or another AI assistant: mark the UI element, error, or image detail you want to discuss, then copy or export the annotated image into your conversation. The same workflow is useful for debugging, technical support, and visual feedback.
+
 ## What you can do
 
 - Draw arrows, free-form ellipses, and perfect circles.
@@ -42,9 +46,9 @@ flatpak install --user --bundle Screenshot-Markierer.flatpak
 
 The runtime is obtained from the configured Flatpak remote. The published bundle was built for x86_64 Linux.
 
-## Release policy
+## Project status
 
-This project is published as a one-time release. No update channel or future updates are planned. The public source remains available so anyone can use, modify, fork, redistribute, or continue the project under the license below.
+Ongoing maintenance, support, and future releases are not guaranteed. I may revisit the project in the future. Questions and bug reports are welcome via GitHub Issues.
 
 ## License
 
